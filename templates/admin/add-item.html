@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: black;
+            color: white;
+            padding: 0px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .add-product-container {
+            background-color: #ffffff;
+            color: #000000;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            width: 300px;
+            text-align: center;
+            margin: 15px;
+        }
+
+        .add-product-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .add-product-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .add-product-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .add-product-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pre-product {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+        }
+        h4 {
+            color: {{color}};
+        }
+        #quest {
+            text-align: left;
+
+        }
+
+        #quest h5{
+            margin: 7px;
+
+        }
+        #quest p{
+            margin: 7px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="../add_item">Add item</a>
+            <a href="../orders">Orders</a>
+            <a href="../delete">Delete item</a>
+            <a href="../promocodes">Promocodes</a>
+        </nav>
+    </header>
+
+    <div class="pre-product">
+        <div class="add-product-container">
+            <h2>Add Product to Store</h2>
+            <form class="add-product-form" action="#" method="post">
+                <input type="text" placeholder="Required info(separeted with ,)" name="requiredInfo" required>
+                <input type="text" placeholder="Description of the product" name="description" required>
+                <input type="link" placeholder="Url or urls to the images(https://example1.png,https://example2.png)" name="url" required>
+                <input type="text" placeholder="Thumbnail Url" name="thumbnailUrl" required>
+                <input type="text" placeholder="Item Name" name="itemName" required>
+                <select name="type">
+                    {% for i in groups %}
+                    <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" placeholder="price" name="price" required>
+                <h4>{{wrong_1}}</h4>
+                <button type="submit">Add Product</button>
+            </form>
+            <h2>Add Question to the store</h2>
+            <form class="add-product-form" action="#" method="post">
+                <input type="text" placeholder="Question key(img_url, name_prod, ..)" name="question_key" required>
+                <input type="link" placeholder="Question" name="question" required>
+                <h4>{{wrong_2}}</h4>
+                <button type="submit">Add Question</button>
+            </form>
+            <h2>Delete Question</h2>
+            <form class="add-product-form" action="#" method="post">
+                <input type="text" placeholder="Question key to delete(img_url, name_prod, ..)" name="question_key_delete" required>
+                <h4>{{wrong_3}}</h4>
+                <button type="submit">Delete Question</button>
+            </form>
+            <h2>Add group</h2>
+            <form class="add-product-form" action="#" method="post">
+                <input type="text" placeholder="Group that will be added" name="add_group" required>
+                <h4>{{wrong_4}}</h4>
+                <button type="submit">Add group</button>
+            </form>
+            <h2>Delete group</h2>
+            <form class="add-product-form" action="#" method="post">
+                <input type="text" placeholder="Group that will be deleted" name="delete_group" required>
+                <h4>{{wrong_5}}</h4>
+                <button type="submit">Delete group</button>
+            </form>
+        </div>
+        <div class="add-product-container" id="quest">
+            <h2>Questions that are already</h2>
+            {% for i in questions %}
+            <h5>{{i['itemKey']}}</h5>
+            <p>{{i['itemQuestion']}}</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>

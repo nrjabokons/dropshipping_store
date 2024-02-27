@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: black;
+            color: white;
+            padding: 0px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #000;
+            color: #fff;
+        }
+
+        tr {
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"] {
+            padding: 6px;
+            margin-bottom: 10px;
+            width: 200px;
+        }
+        .table-name {
+            color: #fff;
+        }
+        .data-container {
+            text-align: center;
+            flex-direction: column;
+            /* margin-inline: 20%; */
+        }
+        .data-container button {
+            width:120px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            
+        }
+        .data-container label {
+            color: #fff;
+
+        }
+        .product-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        .product {
+            background-color: #ffffff;
+            color: #000000;
+            border: 1px solid #000000;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px;
+            width: 250px;
+            text-align: center;
+        }
+
+        .product img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .product h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .product p {
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .buy-button {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .buy-button:hover {
+            background-color: #ffffff;
+            border: 2px solid #000000;
+            color: black;
+        }
+
+        .button-container {
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button-container form {
+            margin: auto;
+        }
+
+        /* Style for the white button */
+        .button {
+            width: 30%;
+            margin: 5px;
+            background-color: white;
+            color: black;
+            border: 1px solid rgb(255, 254, 254);
+            padding: 7px 7px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .all-products {
+            color: white;
+            text-align: center;
+            font-size: 30px;
+        }
+        .wrong {
+            color: {{color}};
+        }
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="../add_item">Add item</a>
+            <a href="../orders">Orders</a>
+            <a href="../delete">Delete item</a>
+            <a href="../promocodes">Promocodes</a>
+        </nav>
+    </header>
+
+    <div>
+        <div class="all-products">
+            <h2>DELETE ITEM</h2>
+            <p class="wrong">{{wrong}}</p>
+        </div>
+        <div class="product-container">
+            {% for i in products %}
+            <form action="#" method="post">
+                <div class="product">
+                    <img src="{{i['thumbnailUrl']}}" alt="{{i['itemName']}}">
+                    <img src="{{i['url']}}" alt="{{i['itemName']}}">
+                    <h2>{{i['itemName']}}</h2>
+                    <p>{{i['description']}}</p>
+                    <button class="buy-button"  name='delete' value="{{i['id']}}">Delete</button>
+                </div>
+            </form>
+            {% endfor %}
+        </div>
+    </div>
+    
+</body>
+</html>
