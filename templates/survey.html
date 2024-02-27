@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;" border-radius="20px">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questionnaire</title>
+  <style>
+    #exit-button {
+      position: absolute;
+      top: 10px;
+      right: 25px;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    body {
+      background-color: #000000;
+      /* Set background color to white */
+      /* Set text color to black */
+      font-family: Arial, sans-serif;
+      /* Set font family */
+      margin: 0;
+      /* Remove default margin */
+      width: 100%;
+      height: 90%;
+    }
+
+    #question-form {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      max-width: 300px;
+      /* Set max width for better readability */
+    }
+
+    #instagram-input {
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #000;
+      /* Set input border color to black */
+      border-radius: 5px;
+      /* Add border radius for rounded corners */
+    }
+
+    #promo-input {
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #000;
+      /* Set input border color to black */
+      border-radius: 5px;
+      /* Add border radius for rounded corners */
+    }
+
+
+    #submit-button {
+      background-color: #ffffff;
+      /* Set button background color to black */
+      color: #000000;
+      /* Set button text color to white */
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .payment-frame {
+      /* display: flex; */
+      text-align: center;
+      border-radius: 25px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .question {
+      display: inline-block;
+      margin: 100px;
+    }
+
+    .question label {
+      font-size: 30px;
+      color: #fff;
+    }
+
+    .submit {
+      position: absolute;
+      bottom: 50px;
+      right: 20px;
+    }
+
+    .submit button {
+      width: 70px;
+      font-style: italic;
+    }
+
+    .submit-back {
+      position: absolute;
+      bottom: 50px;
+      left: 20px;
+    }
+
+    .submit-back button {
+      width: 70px;
+      font-style: italic;
+    }
+
+    .lines_1 {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 30px;
+      border-bottom: 2px solid white;
+    }
+
+    .lines_2 {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 30px;
+      border-top: 2px solid white;
+    }
+
+    .logo {
+      position: absolute;
+      font-family: Arial;
+      font-size: 150px;
+      top: 25%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      opacity: 0.1;
+      z-index: -1;
+      border: 3px solid #000;
+    }
+
+    .divAdd {
+      margin-top: 35px;
+    }
+
+    .divAdd h1 {
+      font-size: 30px;
+    }
+
+    .divpayments {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .PaymentMethod {
+      background-color: #000000;
+      border-radius: 10px;
+      margin: 5px;
+      border: 2px solid #6f6f6f;
+      transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .PaymentMethod:hover {
+      border: 2px solid #ffffff;
+      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+    }
+
+    .HowPay {
+      color: white;
+    }
+
+    .HowPay h1 {
+      font-size: 25px;
+      margin: 0;
+    }
+
+    .HowPay h4 {
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    let type = "{{type}}";
+    let price = "{{price}}";
+    const itemid= "{{itemid}}";
+    let instagram = "";
+    let addServ = "";
+    let promocode = "";
+    function exit() {
+      parent.postMessage("exit", "*")
+    }
+    function Promocode(button) {
+      console.log('FIRST TIME INSTA');
+      if (button === "next") {
+        instagram = document.getElementById("instagram-input").value;
+      };
+      var BackButton = document.createElement('div');
+      BackButton.className = 'submit-back';
+      BackButton.innerHTML = '<button type="submit" id="backButton" value="promo" onclick="location.reload();"><b>Back</b></button>';
+
+      if (button === 'next') {
+        document.getElementById("question").remove();
+      } else {
+        var divAdd = document.getElementById("divAdd");
+        divAdd.remove();
+      }
+      var question = document.createElement("div");
+      question.className = "question";
+      question.id = "question";
+      question.innerHTML = `<div id="containerInstaLabel">
+          <label for="promo-input">Do you have promocode?</label>
+        </div>
+        <div id="containerInstaInput">
+          <input type="text" id="promo-input" name="promocode" placeholder="Promocode" required>
+
+        </div>`;
+
+      var paymentFrame = document.getElementById("payment-frame");
+      paymentFrame.appendChild(question);
+      paymentFrame.appendChild(BackButton);
+
+      var NextButton = document.getElementById('nextButton');
+      NextButton.value = "add-service";
+    }
+
+    function getAdditionalServ(button) {
+      var backButton = document.getElementById('backButton');
+      backButton.setAttribute('onclick', 'Back()');
+      backButton.value = 'promo';
+
+      if (button === 'next') {
+        promocode = document.getElementById("promo-input").value;
+        document.getElementById("question").remove();
+      } else {
+        document.getElementById('divpayments').remove();
+      }
+      var paymentFrame = document.getElementById("payment-frame");
+
+      var divAdd = document.createElement('div');
+      divAdd.className = "divAdd";
+      divAdd.id = "divAdd";
+      divAdd.style.color = 'white';
+
+      var divQuest = document.createElement('h1');
+      console.log(type);
+      
+      divQuest.innerHTML = `Do you want to receive email advertisement?`;
+
+      var imgAdd = document.createElement('img');
+      imgAdd.src = 'https://i.postimg.cc/wvjxh9KS/paper.png';
+      imgAdd.style.width = "100px";
+
+      var ExplanAdd = document.createElement('p');
+      ExplanAdd.innerHTML = "(We will collect your email only for advertisement purposes)";
+      ExplanAdd.style.margin = '10px';
+
+
+      var divCheckboxes = document.createElement('div');
+      divCheckboxes.innerHTML = `<div class="checkbox-wrapper-55">
+  <label class="rocker rocker-small">
+    <input type="checkbox" id="add-serv" checked>
+    <span class="switch-left">Yes</span>
+    <span class="switch-right">No</span>
+  </label>
+</div>
+
+<style>
+  .checkbox-wrapper-55 input[type="checkbox"] {
+    visibility: hidden;
+    display: none;
+  }
+
+  .checkbox-wrapper-55 *,
+  .checkbox-wrapper-55 ::after,
+  .checkbox-wrapper-55 ::before {
+    box-sizing: border-box;
+  }
+
+  .checkbox-wrapper-55 .rocker {
+    display: inline-block;
+    position: relative;
+    /*
+    SIZE OF SWITCH
+    ==============
+    All sizes are in em - therefore
+    changing the font-size here
+    will change the size of the switch.
+    See .rocker-small below as example.
+    */
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    color: #888;
+    width: 7em;
+    height: 4em;
+    overflow: hidden;
+    border-bottom: 0.5em solid #eee;
+  }
+
+  .checkbox-wrapper-55 .rocker-small {
+    font-size: 0.75em;
+  }
+
+  .checkbox-wrapper-55 .rocker::before {
+    content: "";
+    position: absolute;
+    top: 0.5em;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #999;
+    border: 0.5em solid #eee;
+    border-bottom: 0;
+  }
+
+  .checkbox-wrapper-55 .switch-left,
+  .checkbox-wrapper-55 .switch-right {
+    cursor: pointer;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.5em;
+    width: 3em;
+    transition: 0.2s;
+    user-select: none;
+  }
+
+  .checkbox-wrapper-55 .switch-left {
+    height: 2.4em;
+    width: 2.75em;
+    left: 0.85em;
+    bottom: 0.4em;
+    background-color: #ddd;
+    transform: rotate(15deg) skewX(15deg);
+  }
+
+  .checkbox-wrapper-55 .switch-right {
+    right: 0.5em;
+    bottom: 0;
+    background-color: #bd5757;
+    color: #fff;
+  }
+
+  .checkbox-wrapper-55 .switch-left::before,
+  .checkbox-wrapper-55 .switch-right::before {
+    content: "";
+    position: absolute;
+    width: 0.4em;
+    height: 2.45em;
+    bottom: -0.45em;
+    background-color: #ccc;
+    transform: skewY(-65deg);
+  }
+
+  .checkbox-wrapper-55 .switch-left::before {
+    left: -0.4em;
+  }
+
+  .checkbox-wrapper-55 .switch-right::before {
+    right: -0.375em;
+    background-color: transparent;
+    transform: skewY(65deg);
+  }
+
+  .checkbox-wrapper-55 input:checked + .switch-left {
+    background-color: #0084d0;
+    color: #fff;
+    bottom: 0px;
+    left: 0.5em;
+    height: 2.5em;
+    width: 3em;
+    transform: rotate(0deg) skewX(0deg);
+  }
+
+  .checkbox-wrapper-55 input:checked + .switch-left::before {
+    background-color: transparent;
+    width: 3.0833em;
+  }
+
+  .checkbox-wrapper-55 input:checked + .switch-left + .switch-right {
+    background-color: #ddd;
+    color: #888;
+    bottom: 0.4em;
+    right: 0.8em;
+    height: 2.4em;
+    width: 2.75em;
+    transform: rotate(-15deg) skewX(-15deg);
+  }
+
+  .checkbox-wrapper-55 input:checked + .switch-left + .switch-right::before {
+    background-color: #ccc;
+  }
+
+  /* Keyboard Users */
+  .checkbox-wrapper-55 input:focus + .switch-left {
+    color: #333;
+  }
+
+  .checkbox-wrapper-55 input:checked:focus + .switch-left {
+    color: #fff;
+  }
+
+  .checkbox-wrapper-55 input:focus + .switch-left + .switch-right {
+    color: #fff;
+  }
+
+  .checkbox-wrapper-55 input:checked:focus + .switch-left + .switch-right {
+    color: #333;
+  }
+</style>`;
+      divAdd.appendChild(divQuest);
+      divAdd.appendChild(imgAdd);
+      divAdd.appendChild(ExplanAdd);
+      divAdd.appendChild(divCheckboxes);
+
+      paymentFrame.appendChild(divAdd);
+      if (button === 'next') {
+        var NextButton = document.getElementById('nextButton');
+        NextButton.value = "choose-pay";
+      }
+      else {
+        NextButtonDiv = document.createElement('div');
+        NextButtonDiv.className = 'submit';
+        NextButton = document.createElement('button');
+        NextButton.id = 'nextButton';
+        NextButton.value = 'choose-pay';
+        NextButton.setAttribute('onclick', 'Next()');
+        NextButton.innerHTML = "<b>Next</b>";
+        NextButtonDiv.appendChild(NextButton);
+        paymentFrame.appendChild(NextButtonDiv);
+      }
+      console.log("END ADD SERVICE");
+      console.log(NextButton.value);
+    }
+    function getPayment() {
+      console.log('GET PAYMENT');
+      var backButton = document.getElementById('backButton');
+      console.log(backButton.value);
+      backButton.value = 'add-service';
+      console.log(backButton.value);
+      backButton.setAttribute('onclick', 'Back()');
+
+      addServ = document.getElementById("add-serv").checked;
+      console.log(addServ);
+
+      //Remove old divs
+      var divAdd = document.getElementById("divAdd");
+      divAdd.remove();
+
+      var NextButton = document.getElementById("nextButton");
+      NextButton.remove();
+
+
+      //Get main div
+      var paymentFrame = document.getElementById("payment-frame");
+
+      //Create paymentDiv
+      var divPayments = document.createElement("div");
+      divPayments.className = "divpayments";
+      divPayments.id = "divpayments";
+
+
+      //How do you wanna pay
+      var HowPay = document.createElement("div");
+      var new_price = price;
+      
+      HowPay.innerHTML = `<h1>How do you want to pay?</h1><h4>Total: ${new_price}$</h4>`;
+      HowPay.className = "HowPay";
+
+
+      divPayments.appendChild(HowPay);
+
+      //Create separete payments
+      var divPaymentMethodCard = document.createElement("button");
+      divPaymentMethodCard.style.display = "flex";
+      divPaymentMethodCard.style.width = "300px";
+      divPaymentMethodCard.className = "PaymentMethod";
+      divPaymentMethodCard.setAttribute("onclick", "LoadingScreen('card')");
+      divPaymentMethodCard.type = 'button';
+
+
+      var imgPaymentMethod = document.createElement("img");
+      imgPaymentMethod.src = "https://i.postimg.cc/0Nf2Mb4Y/card.png";
+      imgPaymentMethod.style.width = "40px";
+      imgPaymentMethod.style.height = "40px";
+      imgPaymentMethod.style.margin = "10px";
+
+      var textPaymentMethod = document.createElement("div");
+      textPaymentMethod.innerHTML = `<h3 style="color:white;">Pay with Card</h3>`;
+      textPaymentMethod.style.alignItems = "center";
+      textPaymentMethod.style.display = "flex";
+      textPaymentMethod.style.textAlign = "right";
+      textPaymentMethod.style.width = "300px";
+
+
+
+
+      divPaymentMethodCard.appendChild(imgPaymentMethod);
+      divPaymentMethodCard.appendChild(textPaymentMethod);
+
+      divPayments.appendChild(divPaymentMethodCard);
+
+      //------------------------------------------------------------
+
+      var divPaymentMethodCrypto = document.createElement("button");
+      divPaymentMethodCrypto.style.display = "flex";
+      divPaymentMethodCrypto.style.padding = "0";
+      divPaymentMethodCrypto.className = "PaymentMethod";
+      divPaymentMethodCrypto.style.width = "300px";
+      divPaymentMethodCrypto.setAttribute("onclick", "LoadingScreen('crypto')");
+      divPaymentMethodCrypto.type = 'button';
+
+      var imgPaymentMethod = document.createElement("img");
+      imgPaymentMethod.src = "https://i.postimg.cc/904Wn1Qb/crypto.png";
+      imgPaymentMethod.style.width = "40px";
+      textPaymentMethod.style.textAlign = "right";
+      imgPaymentMethod.style.margin = "10px";
+
+
+      var textPaymentMethod = document.createElement("div");
+      textPaymentMethod.innerHTML = `<h3 style="color:white;">Pay with Crypto</h3>`;
+      textPaymentMethod.style.alignItems = "center";
+      textPaymentMethod.style.display = "flex";
+      textPaymentMethod.style.width = "100%";
+
+
+      divPaymentMethodCrypto.appendChild(imgPaymentMethod);
+      divPaymentMethodCrypto.appendChild(textPaymentMethod);
+
+      divPayments.appendChild(divPaymentMethodCrypto);
+
+      //------------------------------------------------------------
+
+      var divPaymentMethodPaypal = document.createElement("button");
+      divPaymentMethodPaypal.style.display = "flex";
+      divPaymentMethodPaypal.style.padding = "0";
+      divPaymentMethodPaypal.className = "PaymentMethod";
+      divPaymentMethodPaypal.style.width = "300px";
+      divPaymentMethodPaypal.setAttribute("onclick", "LoadingScreen('paypal')");
+      divPaymentMethodPaypal.type = 'button';
+
+      var imgPaymentMethod = document.createElement("img");
+      imgPaymentMethod.src = "https://i.postimg.cc/3NPK5pyT/paypal.png";
+      imgPaymentMethod.style.width = "40px";
+      textPaymentMethod.style.textAlign = "right";
+      imgPaymentMethod.style.margin = "10px";
+
+
+      var textPaymentMethod = document.createElement("div");
+      textPaymentMethod.innerHTML = `<h3 style="color:white;">Pay with Paypal</h3>`;
+      textPaymentMethod.style.alignItems = "center";
+      textPaymentMethod.style.display = "flex";
+      textPaymentMethod.style.width = "100%";
+
+
+      divPaymentMethodPaypal.appendChild(imgPaymentMethod);
+      divPaymentMethodPaypal.appendChild(textPaymentMethod);
+
+
+      //How do you wanna pay
+
+      divPayments.appendChild(divPaymentMethodPaypal);
+
+
+      paymentFrame.appendChild(divPayments);
+      console.log('END of GET PAYMENT');
+      console.log(backButton.value);
+    }
+    function LoadingScreen(paymentMethod) {
+      document.getElementById('form').remove();
+      var body = document.getElementById('body');
+      body.innerHTML = `<style>body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.center {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+}
+.wave {
+  width: 5px;
+  height: 100px;
+  background: linear-gradient(45deg, cyan, #fff);
+  margin: 10px;
+  animation: wave 1s linear infinite;
+  border-radius: 20px;
+}
+.wave:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.wave:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.wave:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.wave:nth-child(5) {
+  animation-delay: 0.4s;
+}
+.wave:nth-child(6) {
+  animation-delay: 0.5s;
+}
+.wave:nth-child(7) {
+  animation-delay: 0.6s;
+}
+.wave:nth-child(8) {
+  animation-delay: 0.7s;
+}
+.wave:nth-child(9) {
+  animation-delay: 0.8s;
+}
+.wave:nth-child(10) {
+  animation-delay: 0.9s;
+}
+
+@keyframes wave {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}</style><div class="center">
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+</div>`;
+      delayedFunction(paymentMethod);
+    }
+    async function delayedFunction(paymentMethod) {
+      console.log("Start of the function");
+
+      // Set a delay of 2000 milliseconds (2 seconds)
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      sendApiRequest(paymentMethod);
+    }
+    function payment(link){
+      parent.postMessage(`link|${link}`, "*");
+    };
+    function sendApiRequest(paymentMethod) {
+      var xmlHttp = new XMLHttpRequest();
+      var url = `/payment?itemid=${itemid}&data=` + encodeURIComponent(JSON.stringify({ "instagram": instagram, "add_marked": addServ, "payment_method": paymentMethod, "promo": promocode }));
+      xmlHttp.open("GET", url, false);
+      xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xmlHttp.send(JSON.stringify({ "instagram": instagram, "add_marked": addServ, "payment_method": paymentMethod }));
+
+      console.log(xmlHttp.responseText);
+      console.log(xmlHttp.status);
+      const redirectLink = JSON.parse(xmlHttp.responseText).redirectLink;
+      console.log('Redirect Link:', redirectLink);
+      payment(redirectLink);
+
+    }
+
+
+    function Next() {
+      event.preventDefault();
+      var NextButton = document.getElementById('nextButton');
+      console.log('NEXT FUNCTION');
+      console.log(NextButton.value);
+      if (NextButton.value == "promo" && document.getElementById("instagram-input").value !== '') {
+        console.log(document.getElementById("instagram-input").value);
+        Promocode('next');
+      }
+      else if (NextButton.value == "add-service") {
+        console.log('ENTERED ADD-SERVICE');
+        getAdditionalServ('next');
+      }
+      else if (NextButton.value == "choose-pay") {
+        getPayment();
+      }
+    }
+    function Back() {
+      event.preventDefault();
+      var BackButton = document.getElementById('backButton');
+      console.log(BackButton.value);
+      if (BackButton.value == "promo") {
+        Promocode('back');
+      }
+      else if (BackButton.value == "add-service") {
+        getAdditionalServ('back');
+      }
+    }
+
+
+  </script>
+</head>
+
+<body id="body">
+  <form id="form">
+    <div class="payment-frame" id="payment-frame">
+      <h1 class="logo"><b>SOME SHOP</b></h1>
+      <div class="lines_1"></div>
+      <div id="exit-button" onclick="exit()"><b>X</b></div>
+
+      <div class="question" id="question">
+        <div id="containerInstaLabel">
+          <label for="instagram-input">Write your <img width="20px" src="https://i.postimg.cc/xdMJfT4h/insta.png" /> or
+            <img width="20px" src="https://i.postimg.cc/MpcfLYbW/telegram.png" /> in case we need additional
+            information</label>
+        </div>
+        <div id="containerInstaInput">
+          <input type="text" id="instagram-input" name="instagram" placeholder="Your Instagram or Telegram" required>
+
+        </div>
+      </div>
+      <div class="submit">
+        <button type="submit" id="nextButton" value="promo" onclick="Next()"><b>Next</b></button>
+      </div>
+      <div class="lines_2"></div>
+  </form>
+
+</body>
+
+</html>
