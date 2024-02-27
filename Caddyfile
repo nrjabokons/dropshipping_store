@@ -1,0 +1,8 @@
+www.somedomain.com {
+    redir https://somedomain.com{uri}
+}
+
+somedomain.com {
+    reverse_proxy localhost:8000
+}
+
